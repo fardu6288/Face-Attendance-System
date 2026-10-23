@@ -1,148 +1,145 @@
-Face Attendance System
 
-A lightweight, real-time face recognition attendance system built using OpenCV, NumPy, and Pandas — no GPU, no deep learning, and no heavy models required. Just plug in a webcam and run.
+# Face Attendance System
 
-The system detects faces, extracts histogram-based features, compares them with known faces, and logs attendance automatically into a CSV file.
+A lightweight, real-time face recognition attendance system built with Python, OpenCV, NumPy, and Pandas. The system uses a webcam to detect and recognize known faces and records attendance in a CSV file without requiring a GPU or deep-learning models.
 
-🔥 Features
-✔ Real-Time Face Detection
+## Features
 
-Uses OpenCV Haarcascade to detect faces from a live webcam stream.
-(See detector in code) 
+- **Real-Time Face Detection:** Detects faces from a live webcam feed using OpenCV Haar cascades.
+- **Histogram-Based Recognition:** Extracts grayscale histogram features and compares them with stored face templates using correlation-based matching.
+- **Automated Attendance Logging:** Records recognized individuals with their names, dates, and timestamps.
+- **CSV Storage:** Saves attendance records in `attendance.csv` across sessions.
+- **Snapshot Capture:** Press `S` to save a camera snapshot.
+- **Attendance Reset:** Press `R` to reset the current day's attendance.
+- **Simple Setup:** Add labeled face images to the `known_faces/` directory.
+- **CPU-Friendly Processing:** Designed to run without a dedicated GPU or deep-learning model.
 
-main
+## Technology Stack
 
-✔ Offline Face Recognition (No Deep Learning Needed)
+| Technology | Purpose |
+|---|---|
+| Python | Application logic |
+| OpenCV | Webcam access and face detection |
+| NumPy | Histogram features and numerical operations |
+| Pandas | Attendance data management |
+| Haar cascades | Face detection |
+| CSV | Attendance storage |
 
-Recognition is done using:
+## Project Structure
 
-Grayscale normalization
+```text
+face-attendance-system/
+├── main.py
+├── requirements.txt
+├── known_faces/
+│   ├── Alice.jpg
+│   └── Bob.png
+└── attendance.csv
+```
 
-Histogram feature extraction
+The `attendance.csv` file is generated automatically when attendance is recorded, if implemented that way in the current code.
 
-Correlation-based matching
+## Getting Started
 
+### Prerequisites
 
-main
+- Python 3.x
+- A webcam
+- The libraries listed in `requirements.txt`
 
-✔ Auto Attendance Logging
+### 1. Clone the Repository
 
-Each recognized person is logged with:
+```bash
+git clone YOUR_REPOSITORY_URL
+cd YOUR_REPOSITORY_FOLDER
+```
 
-Name
+Replace the placeholders with your actual GitHub repository URL and folder name.
 
-Date
+### 2. Install Dependencies
 
-Time
-Saved to attendance.csv, appended across sessions.
-
-
-main
-
-✔ Snapshot & Reset Controls
-
-While the camera is running:
-
-Q → Quit and save attendance
-
-S → Save snapshot
-
-R → Reset today’s attendance
-
-
-main
-
-✔ Easy Setup
-
-Just create a folder and drop labeled face images:
-
-known_faces/
-    John.jpg
-    Sarah.png
-
-
-Multiple images per person allowed.
-
-
-main
-
-📁 Project Structure
-├── main.py              # Main face attendance system
-├── attendance.csv       # Auto-generated attendance log
-├── known_faces/         # Add your face images here
-├── requirements.txt     # Required Python libraries
-
-
-requirements.txt includes OpenCV, NumPy, Pandas, etc.
-
-
-requirements
-
-🛠️ Installation
-1. Install dependencies
+```bash
 pip install -r requirements.txt
+```
 
-2. Add face images
+### 3. Add Known Faces
 
-Create a known_faces folder next to main.py, then add images named:
+Create a `known_faces/` directory alongside `main.py`.
 
-Alice.jpg
-Bob.png
+Add clear face images using each person's name as the filename:
 
-3. Run the program
+```text
+known_faces/
+├── Alice.jpg
+├── Bob.png
+└── Sarah.jpg
+```
+
+Use additional images for a person only if the implementation supports multiple images per individual.
+
+### 4. Run the Application
+
+```bash
 python main.py
+```
 
+If prompted, press Enter to start webcam attendance.
 
-If faces are loaded, press ENTER to start the camera.
+## Keyboard Controls
 
-🎮 Key Controls
-Key	Action
-Q	Quit & save attendance
-S	Capture snapshot
-R	Reset today’s attendance
-🎯 How It Works
+| Key | Action |
+|---|---|
+| `Q` | Quit and save attendance |
+| `S` | Capture a snapshot |
+| `R` | Reset today's attendance |
 
-Loads Haarcascade face detector
+## How It Works
 
-Loads every image in known_faces/
+1. Loads the Haar cascade face detector.
+2. Reads the images stored in `known_faces/`.
+3. Captures frames from the webcam.
+4. Detects faces in each frame.
+5. Converts detected face regions to grayscale and extracts histogram-based features.
+6. Compares the extracted features with stored templates using correlation-based matching.
+7. Applies the configured matching threshold to identify potential matches.
+8. Records recognized individuals in the attendance CSV file.
 
-Detects the face → extracts histogram features
+The system uses histogram similarity rather than a deep-learning face-recognition model. Its recognition performance may vary with lighting, face orientation, image quality, and similarity between individuals.
 
-Compares features with stored templates
+## Attendance Output
 
-If match > 70% → mark attendance
+Example `attendance.csv`:
 
-Writes attendance to CSV
+```csv
+Name,Date,Time
+Alice,2025-11-22,09:13:44
+Bob,2025-11-22,09:14:02
+```
 
-All logic implemented in UniversalFaceAttendance class.
+Actual dates and timestamps are generated when attendance is recorded.
 
+## Limitations
 
-main
+- Histogram-based matching is less robust than modern face-recognition embeddings.
+- Lighting changes and face orientation can affect matching.
+- Similar-looking faces may be confused.
+- A similarity threshold is not equivalent to a measured recognition accuracy.
+- The system should not be treated as a security-grade identity verification solution.
 
-📊 Attendance Output (CSV)
+## Privacy Considerations
 
-Example:
+Face images and attendance records contain personal information. Obtain appropriate consent before collecting or processing them, restrict access to stored images and logs, and follow applicable privacy requirements.
 
-Name	Date	Time
-John	2025-11-22	09:13:44
-Sarah	2025-11-22	09:14:02
-🧰 Tech Stack
+## Future Improvements
 
-OpenCV (face detection)
+- Evaluate recognition performance on a labeled test dataset.
+- Add configurable recognition thresholds.
+- Improve duplicate-attendance handling.
+- Add an attendance summary dashboard.
+- Explore more robust face-recognition methods.
 
-NumPy (vector features & correlation)
+## Author
 
-Pandas (CSV storage)
+**Muhammad Fardan Naheem**
 
-Dependencies defined in requirements.txt.
-
-
-requirements
-
-📝 Notes
-
-Ensure your webcam is free (Zoom/Teams off).
-
-More images = better recognition accuracy.
-
-Faces must be clear, front-facing, good lighting.
+GitHub: [fardu6288](https://github.com/fardu6288)
